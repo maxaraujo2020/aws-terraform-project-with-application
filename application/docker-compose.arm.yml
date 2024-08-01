@@ -1,0 +1,39 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+#    stdin_open: true  # Add this line into your service. Necessary for pdb debug
+#    tty: true  # Add this line into your service. Necessary for pdb debug
+    platform: linux/amd64
+    command: odoo -u all
+    environment:
+      HOST: db
+      PORT: 5432
+      USER: odoo
+      PASSWORD: odoo
+      ODOO_AWS_BUCKET_NAME: mdmtestbucketsync
+      ODOO_AWS_REGION:
+      AWS_ACCESS_KEY_ID:
+      AWS_SECRET_ACCESS_KEY:
+      AWS_SESSION_TOKEN:
+    ports:
+      - "8069:8069"
+    volumes:
+      - ./config:/etc/odoo
+      - ./data_dir:/var/lib/odoo
+      - ./addons_odoov16/odoov16_community:/mnt/extra-addons/odoov16_community
+      - ./addons_odoov16/odoov16_medicosmundo:/mnt/extra-addons/odoov16_medicosmundo
+    depends_on:
+      - db
+  db:
+    image: bitnami/postgresql:13
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db:/bitnami/postgresql/data
+    environment:
+      POSTGRESQL_USER: odoo
+      POSTGRESQL_PASSWORD: odoo
+      POSTGRESQL_DATABASE: postgres

@@ -1,0 +1,83 @@
+[
+  {
+    "essential": true,
+    "image": "${image_repository_url}:${image_tag}",
+    "name": "app",
+    "cpu": 512,
+    "memory": 1024,
+    "privileged": true,
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-region": "${awslogs_region}",
+        "awslogs-group": "${awslogs_group}",
+        "awslogs-create-group": "true",
+        "awslogs-stream-prefix": "${awslogs_stream_prefix}"
+      }
+    },
+    "portMappings": [
+      {
+        "containerPort": 80,
+        "hostPort": 80,
+        "protocol": "tcp"
+      }
+    ],
+    "healthCheck":{
+      "command": [
+        "CMD-SHELL",
+        "curl -f http://localhost:80/web/login || exit 1"
+      ],
+      "interval": 100,
+      "timeout": 30,
+      "startPeriod": 100
+    },
+    "environment": [
+      {
+        "name": "PORT",
+        "value": "5432"
+      },
+      {
+        "name": "USER",
+        "value": "postgres_admin"
+      },
+      {
+        "name": "DB_INSTANCE_NAME",
+        "value": "${db_instance_name}"
+      }
+    ],
+    "secrets": [
+      {
+        "name": "ODOO_AWS_ACCESS_KEY",
+        "valueFrom": "${access_key_arn}"
+      },
+      {
+        "name": "ODOO_AWS_BUCKET_NAME",
+        "valueFrom": "${bucket_arn}"
+      },
+      {
+        "name": "ODOO_AWS_REGION",
+        "valueFrom": "${bucket_region_arn}"
+      },
+      {
+        "name": "HOST",
+        "valueFrom": "${db_instance_server_arn}"
+      },
+      {
+        "name": "PASSWORD",
+        "valueFrom": "${db_instance_password_arn}"
+      },
+      {
+        "name": "ODOO_AWS_SECRET_KEY",
+        "valueFrom": "${secret_key_arn}"
+      },
+      {
+        "name": "AWS_ACCESS_KEY_ID",
+        "valueFrom": "${access_key_arn}"
+      },
+      {
+        "name": "AWS_SECRET_ACCESS_KEY",
+        "valueFrom": "${secret_key_arn}"
+      }
+    ]
+  }
+]

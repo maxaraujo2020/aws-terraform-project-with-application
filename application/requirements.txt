@@ -1,0 +1,2 @@
+# Odoo dependencies
+boto3==1.24.77

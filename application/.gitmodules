@@ -1,0 +1,6 @@
+[submodule "addons_odoov16/odoov16_medicosmundo"]
+	path = addons_odoov16/odoov16_medicosmundo
+	url = git@bitbucket.org:dvtpt/odoov16_medicosmundo.git
+[submodule "addons_odoov16/odoov16_community"]
+	path = addons_odoov16/odoov16_community
+	url = git@bitbucket.org:dvtpt/odoov16_community.git
